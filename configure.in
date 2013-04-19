@@ -99,6 +99,8 @@ dnl --------------------------------------------------
 
 AC_CHECK_HEADER(memory.h,CFLAGS="$CFLAGS -DUSE_MEMORY_H",:)
 
+AC_CHECK_HEADERS(endian.h machine/endian.h sys/param.h inttypes.h)
+
 dnl --------------------------------------------------
 dnl Check for typedefs, structures, etc
 dnl --------------------------------------------------
