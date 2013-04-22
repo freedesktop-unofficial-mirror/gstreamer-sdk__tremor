@@ -80,7 +80,7 @@ static int _vorbis_synthesis1(vorbis_block *vb,ogg_packet *op,int decodep){
     /* unpack_header enforces range checking */
     type=ci->map_type[ci->mode_param[mode]->mapping];
     
-    return(_mapping_P[type]->inverse(vb,b->mode[mode]));
+    return(_ivorbis_mapping_P[type]->inverse(vb,b->mode[mode]));
   }else{
     /* no pcm */
     vb->pcmend=0;

@@ -127,15 +127,15 @@ void vorbis_info_clear(vorbis_info *vi){
 
     for(i=0;i<ci->maps;i++) /* unpack does the range checking */
       if(ci->map_param[i])
-	_mapping_P[ci->map_type[i]]->free_info(ci->map_param[i]);
+	_ivorbis_mapping_P[ci->map_type[i]]->free_info(ci->map_param[i]);
 
     for(i=0;i<ci->floors;i++) /* unpack does the range checking */
       if(ci->floor_param[i])
-	_floor_P[ci->floor_type[i]]->free_info(ci->floor_param[i]);
+	_ivorbis_floor_P[ci->floor_type[i]]->free_info(ci->floor_param[i]);
     
     for(i=0;i<ci->residues;i++) /* unpack does the range checking */
       if(ci->residue_param[i])
-	_residue_P[ci->residue_type[i]]->free_info(ci->residue_param[i]);
+	_ivorbis_residue_P[ci->residue_type[i]]->free_info(ci->residue_param[i]);
 
     for(i=0;i<ci->books;i++){
       if(ci->book_param[i]){
@@ -254,7 +254,7 @@ static int _vorbis_unpack_books(vorbis_info *vi,oggpack_buffer *opb){
   for(i=0;i<ci->floors;i++){
     ci->floor_type[i]=oggpack_read(opb,16);
     if(ci->floor_type[i]<0 || ci->floor_type[i]>=VI_FLOORB)goto err_out;
-    ci->floor_param[i]=_floor_P[ci->floor_type[i]]->unpack(vi,opb);
+    ci->floor_param[i]=_ivorbis_floor_P[ci->floor_type[i]]->unpack(vi,opb);
     if(!ci->floor_param[i])goto err_out;
   }
 
@@ -264,7 +264,7 @@ static int _vorbis_unpack_books(vorbis_info *vi,oggpack_buffer *opb){
   for(i=0;i<ci->residues;i++){
     ci->residue_type[i]=oggpack_read(opb,16);
     if(ci->residue_type[i]<0 || ci->residue_type[i]>=VI_RESB)goto err_out;
-    ci->residue_param[i]=_residue_P[ci->residue_type[i]]->unpack(vi,opb);
+    ci->residue_param[i]=_ivorbis_residue_P[ci->residue_type[i]]->unpack(vi,opb);
     if(!ci->residue_param[i])goto err_out;
   }
 
@@ -274,7 +274,7 @@ static int _vorbis_unpack_books(vorbis_info *vi,oggpack_buffer *opb){
   for(i=0;i<ci->maps;i++){
     ci->map_type[i]=oggpack_read(opb,16);
     if(ci->map_type[i]<0 || ci->map_type[i]>=VI_MAPB)goto err_out;
-    ci->map_param[i]=_mapping_P[ci->map_type[i]]->unpack(vi,opb);
+    ci->map_param[i]=_ivorbis_mapping_P[ci->map_type[i]]->unpack(vi,opb);
     if(!ci->map_param[i])goto err_out;
   }
   

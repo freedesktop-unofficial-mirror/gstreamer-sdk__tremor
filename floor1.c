@@ -26,7 +26,7 @@
 #include "misc.h"
 #include "block.h"
 
-#define floor1_rangedB 140 /* floor 1 fixed at -140dB to 0dB range */
+#define ivorbis_floor1_rangedB 140 /* floor 1 fixed at -140dB to 0dB range */
 
 typedef struct {
   int forward_index[VIF_POSIT+2];
@@ -43,7 +43,7 @@ typedef struct {
 
 /***********************************************/
  
-static void floor1_free_info(vorbis_info_floor *i){
+static void ivorbis_floor1_free_info(vorbis_info_floor *i){
   vorbis_info_floor1 *info=(vorbis_info_floor1 *)i;
   if(info){
     memset(info,0,sizeof(*info));
@@ -51,7 +51,7 @@ static void floor1_free_info(vorbis_info_floor *i){
   }
 }
 
-static void floor1_free_look(vorbis_look_floor *i){
+static void ivorbis_floor1_free_look(vorbis_look_floor *i){
   vorbis_look_floor1 *look=(vorbis_look_floor1 *)i;
   if(look){
     memset(look,0,sizeof(*look));
@@ -72,7 +72,7 @@ static int icomp(const void *a,const void *b){
   return(**(int **)a-**(int **)b);
 }
 
-static vorbis_info_floor *floor1_unpack (vorbis_info *vi,oggpack_buffer *opb){
+static vorbis_info_floor *ivorbis_floor1_unpack (vorbis_info *vi,oggpack_buffer *opb){
   codec_setup_info     *ci=(codec_setup_info *)vi->codec_setup;
   int j,k,count=0,maxclass=-1,rangebits;
 
@@ -132,11 +132,11 @@ static vorbis_info_floor *floor1_unpack (vorbis_info *vi,oggpack_buffer *opb){
   return(info);
   
  err_out:
-  floor1_free_info(info);
+  ivorbis_floor1_free_info(info);
   return(NULL);
 }
 
-static vorbis_look_floor *floor1_look(vorbis_dsp_state *vd,vorbis_info_mode *mi,
+static vorbis_look_floor *ivorbis_floor1_look(vorbis_dsp_state *vd,vorbis_info_mode *mi,
                               vorbis_info_floor *in){
 
   int *sortpointer[VIF_POSIT+2];
@@ -324,7 +324,7 @@ static void render_line(int n, int x0,int x1,int y0,int y1,ogg_int32_t *d){
   }
 }
 
-static void *floor1_inverse1(vorbis_block *vb,vorbis_look_floor *in){
+static void *ivorbis_floor1_inverse1(vorbis_block *vb,vorbis_look_floor *in){
   vorbis_look_floor1 *look=(vorbis_look_floor1 *)in;
   vorbis_info_floor1 *info=look->vi;
   codec_setup_info   *ci=(codec_setup_info *)vb->vd->vi->codec_setup;
@@ -411,7 +411,7 @@ static void *floor1_inverse1(vorbis_block *vb,vorbis_look_floor *in){
   return(NULL);
 }
 
-static int floor1_inverse2(vorbis_block *vb,vorbis_look_floor *in,void *memo,
+static int ivorbis_floor1_inverse2(vorbis_block *vb,vorbis_look_floor *in,void *memo,
 			  ogg_int32_t *out){
   vorbis_look_floor1 *look=(vorbis_look_floor1 *)in;
   vorbis_info_floor1 *info=look->vi;
@@ -453,8 +453,8 @@ static int floor1_inverse2(vorbis_block *vb,vorbis_look_floor *in,void *memo,
 }
 
 /* export hooks */
-vorbis_func_floor floor1_exportbundle={
-  &floor1_unpack,&floor1_look,&floor1_free_info,
-  &floor1_free_look,&floor1_inverse1,&floor1_inverse2
+vorbis_func_floor ivorbis_floor1_exportbundle={
+  &ivorbis_floor1_unpack,&ivorbis_floor1_look,&ivorbis_floor1_free_info,
+  &ivorbis_floor1_free_look,&ivorbis_floor1_inverse1,&ivorbis_floor1_inverse2
 };
 

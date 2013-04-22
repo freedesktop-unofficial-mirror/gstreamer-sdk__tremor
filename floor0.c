@@ -288,7 +288,7 @@ void vorbis_lsp_to_curve(ogg_int32_t *curve,int *map,int n,int ln,
 
 /*************** vorbis decode glue ************/
 
-static void floor0_free_info(vorbis_info_floor *i){
+static void ivorbis_floor0_free_info(vorbis_info_floor *i){
   vorbis_info_floor0 *info=(vorbis_info_floor0 *)i;
   if(info){
     memset(info,0,sizeof(*info));
@@ -296,7 +296,7 @@ static void floor0_free_info(vorbis_info_floor *i){
   }
 }
 
-static void floor0_free_look(vorbis_look_floor *i){
+static void ivorbis_floor0_free_look(vorbis_look_floor *i){
   vorbis_look_floor0 *look=(vorbis_look_floor0 *)i;
   if(look){
 
@@ -307,7 +307,7 @@ static void floor0_free_look(vorbis_look_floor *i){
   }
 }
 
-static vorbis_info_floor *floor0_unpack (vorbis_info *vi,oggpack_buffer *opb){
+static vorbis_info_floor *ivorbis_floor0_unpack (vorbis_info *vi,oggpack_buffer *opb){
   codec_setup_info     *ci=(codec_setup_info *)vi->codec_setup;
   int j;
 
@@ -333,7 +333,7 @@ static vorbis_info_floor *floor0_unpack (vorbis_info *vi,oggpack_buffer *opb){
   return(info);
 
  err_out:
-  floor0_free_info(info);
+  ivorbis_floor0_free_info(info);
   return(NULL);
 }
 
@@ -345,7 +345,7 @@ static vorbis_info_floor *floor0_unpack (vorbis_info *vi,oggpack_buffer *opb){
    Note that the scale depends on the sampling rate as well as the
    linear block and mapping sizes */
 
-static vorbis_look_floor *floor0_look (vorbis_dsp_state *vd,vorbis_info_mode *mi,
+static vorbis_look_floor *ivorbis_floor0_look (vorbis_dsp_state *vd,vorbis_info_mode *mi,
                               vorbis_info_floor *i){
   int j;
   vorbis_info        *vi=vd->vi;
@@ -381,7 +381,7 @@ static vorbis_look_floor *floor0_look (vorbis_dsp_state *vd,vorbis_info_mode *mi
   return look;
 }
 
-static void *floor0_inverse1(vorbis_block *vb,vorbis_look_floor *i){
+static void *ivorbis_floor0_inverse1(vorbis_block *vb,vorbis_look_floor *i){
   vorbis_look_floor0 *look=(vorbis_look_floor0 *)i;
   vorbis_info_floor0 *info=look->vi;
   int j,k;
@@ -412,7 +412,7 @@ static void *floor0_inverse1(vorbis_block *vb,vorbis_look_floor *i){
   return(NULL);
 }
 
-static int floor0_inverse2(vorbis_block *vb,vorbis_look_floor *i,
+static int ivorbis_floor0_inverse2(vorbis_block *vb,vorbis_look_floor *i,
 			   void *memo,ogg_int32_t *out){
   vorbis_look_floor0 *look=(vorbis_look_floor0 *)i;
   vorbis_info_floor0 *info=look->vi;
@@ -431,9 +431,9 @@ static int floor0_inverse2(vorbis_block *vb,vorbis_look_floor *i,
 }
 
 /* export hooks */
-vorbis_func_floor floor0_exportbundle={
-  &floor0_unpack,&floor0_look,&floor0_free_info,
-  &floor0_free_look,&floor0_inverse1,&floor0_inverse2
+vorbis_func_floor ivorbis_floor0_exportbundle={
+  &ivorbis_floor0_unpack,&ivorbis_floor0_look,&ivorbis_floor0_free_info,
+  &ivorbis_floor0_free_look,&ivorbis_floor0_inverse1,&ivorbis_floor0_inverse2
 };
 
 

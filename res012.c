@@ -42,7 +42,7 @@ typedef struct {
 
 } vorbis_look_residue0;
 
-void res0_free_info(vorbis_info_residue *i){
+void ivorbis_res0_free_info(vorbis_info_residue *i){
   vorbis_info_residue0 *info=(vorbis_info_residue0 *)i;
   if(info){
     memset(info,0,sizeof(*info));
@@ -50,7 +50,7 @@ void res0_free_info(vorbis_info_residue *i){
   }
 }
 
-void res0_free_look(vorbis_look_residue *i){
+void ivorbis_res0_free_look(vorbis_look_residue *i){
   int j;
   if(i){
 
@@ -87,7 +87,7 @@ static int icount(unsigned int v){
 }
 
 /* vorbis_info is for range checking */
-vorbis_info_residue *res0_unpack(vorbis_info *vi,oggpack_buffer *opb){
+vorbis_info_residue *ivorbis_res0_unpack(vorbis_info *vi,oggpack_buffer *opb){
   int j,acc=0;
   vorbis_info_residue0 *info=(vorbis_info_residue0 *)_ogg_calloc(1,sizeof(*info));
   codec_setup_info     *ci=(codec_setup_info *)vi->codec_setup;
@@ -147,11 +147,11 @@ vorbis_info_residue *res0_unpack(vorbis_info *vi,oggpack_buffer *opb){
 
   return(info);
  errout:
-  res0_free_info(info);
+  ivorbis_res0_free_info(info);
   return(NULL);
 }
 
-vorbis_look_residue *res0_look(vorbis_dsp_state *vd,vorbis_info_mode *vm,
+vorbis_look_residue *ivorbis_res0_look(vorbis_dsp_state *vd,vorbis_info_mode *vm,
 			  vorbis_info_residue *vr){
   vorbis_info_residue0 *info=(vorbis_info_residue0 *)vr;
   vorbis_look_residue0 *look=(vorbis_look_residue0 *)_ogg_calloc(1,sizeof(*look));
@@ -266,7 +266,7 @@ static int _01inverse(vorbis_block *vb,vorbis_look_residue *vl,
   return(0);
 }
 
-int res0_inverse(vorbis_block *vb,vorbis_look_residue *vl,
+int ivorbis_res0_inverse(vorbis_block *vb,vorbis_look_residue *vl,
 		 ogg_int32_t **in,int *nonzero,int ch){
   int i,used=0;
   for(i=0;i<ch;i++)
@@ -278,7 +278,7 @@ int res0_inverse(vorbis_block *vb,vorbis_look_residue *vl,
     return(0);
 }
 
-int res1_inverse(vorbis_block *vb,vorbis_look_residue *vl,
+int ivorbis_res1_inverse(vorbis_block *vb,vorbis_look_residue *vl,
 		 ogg_int32_t **in,int *nonzero,int ch){
   int i,used=0;
   for(i=0;i<ch;i++)
@@ -291,7 +291,7 @@ int res1_inverse(vorbis_block *vb,vorbis_look_residue *vl,
 }
 
 /* duplicate code here as speed is somewhat more important */
-int res2_inverse(vorbis_block *vb,vorbis_look_residue *vl,
+int ivorbis_res2_inverse(vorbis_block *vb,vorbis_look_residue *vl,
 		 ogg_int32_t **in,int *nonzero,int ch){
   long i,k,l,s;
   vorbis_look_residue0 *look=(vorbis_look_residue0 *)vl;
@@ -349,26 +349,26 @@ int res2_inverse(vorbis_block *vb,vorbis_look_residue *vl,
 }
 
 
-vorbis_func_residue residue0_exportbundle={
-  &res0_unpack,
-  &res0_look,
-  &res0_free_info,
-  &res0_free_look,
-  &res0_inverse
+vorbis_func_residue ivorbis_residue0_exportbundle={
+  &ivorbis_res0_unpack,
+  &ivorbis_res0_look,
+  &ivorbis_res0_free_info,
+  &ivorbis_res0_free_look,
+  &ivorbis_res0_inverse
 };
 
-vorbis_func_residue residue1_exportbundle={
-  &res0_unpack,
-  &res0_look,
-  &res0_free_info,
-  &res0_free_look,
-  &res1_inverse
+vorbis_func_residue ivorbis_residue1_exportbundle={
+  &ivorbis_res0_unpack,
+  &ivorbis_res0_look,
+  &ivorbis_res0_free_info,
+  &ivorbis_res0_free_look,
+  &ivorbis_res1_inverse
 };
 
-vorbis_func_residue residue2_exportbundle={
-  &res0_unpack,
-  &res0_look,
-  &res0_free_info,
-  &res0_free_look,
-  &res2_inverse
+vorbis_func_residue ivorbis_residue2_exportbundle={
+  &ivorbis_res0_unpack,
+  &ivorbis_res0_look,
+  &ivorbis_res0_free_info,
+  &ivorbis_res0_free_look,
+  &ivorbis_res2_inverse
 };

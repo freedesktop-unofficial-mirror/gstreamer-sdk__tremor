@@ -53,7 +53,7 @@ typedef struct {
 		     invalidate decay */
 } vorbis_look_mapping0;
 
-static void mapping0_free_info(vorbis_info_mapping *i){
+static void ivorbis_mapping0_free_info(vorbis_info_mapping *i){
   vorbis_info_mapping0 *info=(vorbis_info_mapping0 *)i;
   if(info){
     memset(info,0,sizeof(*info));
@@ -61,7 +61,7 @@ static void mapping0_free_info(vorbis_info_mapping *i){
   }
 }
 
-static void mapping0_free_look(vorbis_look_mapping *look){
+static void ivorbis_mapping0_free_look(vorbis_look_mapping *look){
   int i;
   vorbis_look_mapping0 *l=(vorbis_look_mapping0 *)look;
   if(l){
@@ -80,7 +80,7 @@ static void mapping0_free_look(vorbis_look_mapping *look){
   }
 }
 
-static vorbis_look_mapping *mapping0_look(vorbis_dsp_state *vd,vorbis_info_mode *vm,
+static vorbis_look_mapping *ivorbis_mapping0_look(vorbis_dsp_state *vd,vorbis_info_mode *vm,
 			  vorbis_info_mapping *m){
   int i;
   vorbis_info          *vi=vd->vi;
@@ -100,10 +100,10 @@ static vorbis_look_mapping *mapping0_look(vorbis_dsp_state *vd,vorbis_info_mode 
     int floornum=info->floorsubmap[i];
     int resnum=info->residuesubmap[i];
 
-    look->floor_func[i]=_floor_P[ci->floor_type[floornum]];
+    look->floor_func[i]=_ivorbis_floor_P[ci->floor_type[floornum]];
     look->floor_look[i]=look->floor_func[i]->
       look(vd,vm,ci->floor_param[floornum]);
-    look->residue_func[i]=_residue_P[ci->residue_type[resnum]];
+    look->residue_func[i]=_ivorbis_residue_P[ci->residue_type[resnum]];
     look->residue_look[i]=look->residue_func[i]->
       look(vd,vm,ci->residue_param[resnum]);
     
@@ -125,7 +125,7 @@ static int ilog(unsigned int v){
 }
 
 /* also responsible for range checking */
-static vorbis_info_mapping *mapping0_unpack(vorbis_info *vi,oggpack_buffer *opb){
+static vorbis_info_mapping *ivorbis_mapping0_unpack(vorbis_info *vi,oggpack_buffer *opb){
   int i,b;
   vorbis_info_mapping0 *info=(vorbis_info_mapping0 *)_ogg_calloc(1,sizeof(*info));
   codec_setup_info     *ci=(codec_setup_info *)vi->codec_setup;
@@ -178,12 +178,12 @@ static vorbis_info_mapping *mapping0_unpack(vorbis_info *vi,oggpack_buffer *opb)
   return info;
 
  err_out:
-  mapping0_free_info(info);
+  ivorbis_mapping0_free_info(info);
   return(NULL);
 }
 
 static int seq=0;
-static int mapping0_inverse(vorbis_block *vb,vorbis_look_mapping *l){
+static int ivorbis_mapping0_inverse(vorbis_block *vb,vorbis_look_mapping *l){
   vorbis_dsp_state     *vd=vb->vd;
   vorbis_info          *vi=vd->vi;
   codec_setup_info     *ci=(codec_setup_info *)vi->codec_setup;
@@ -319,10 +319,10 @@ static int mapping0_inverse(vorbis_block *vb,vorbis_look_mapping *l){
 }
 
 /* export hooks */
-vorbis_func_mapping mapping0_exportbundle={
-  &mapping0_unpack,
-  &mapping0_look,
-  &mapping0_free_info,
-  &mapping0_free_look,
-  &mapping0_inverse
+vorbis_func_mapping ivorbis_mapping0_exportbundle={
+  &ivorbis_mapping0_unpack,
+  &ivorbis_mapping0_look,
+  &ivorbis_mapping0_free_info,
+  &ivorbis_mapping0_free_look,
+  &ivorbis_mapping0_inverse
 };

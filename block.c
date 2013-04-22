@@ -190,7 +190,7 @@ static int _vds_init(vorbis_dsp_state *v,vorbis_info *vi){
   for(i=0;i<ci->modes;i++){
     int mapnum=ci->mode_param[i]->mapping;
     int maptype=ci->map_type[mapnum];
-    b->mode[i]=_mapping_P[maptype]->look(v,ci->mode_param[i],
+    b->mode[i]=_ivorbis_mapping_P[maptype]->look(v,ci->mode_param[i],
 					 ci->map_param[mapnum]);
   }
   return 0;
@@ -251,7 +251,7 @@ void vorbis_dsp_clear(vorbis_dsp_state *v){
       for(i=0;i<ci->modes;i++){
 	int mapnum=ci->mode_param[i]->mapping;
 	int maptype=ci->map_type[mapnum];
-	if(b && b->mode)_mapping_P[maptype]->free_look(b->mode[i]);
+	if(b && b->mode)_ivorbis_mapping_P[maptype]->free_look(b->mode[i]);
       }
     }
 
