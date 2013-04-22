@@ -39,27 +39,27 @@ void _verify(OggVorbis_File *ov,
   ogg_int64_t pos;
 
   /* verify the raw position, the pcm position and position decode */
-  if(val!=-1 && ov_raw_tell(ov)<val){
+  if(val!=-1 && ivorbis_ov_raw_tell(ov)<val){
     fprintf(stderr,"raw position out of tolerance: requested %ld, got %ld\n",
-           (long)val,(long)ov_raw_tell(ov));
+           (long)val,(long)ivorbis_ov_raw_tell(ov));
     exit(1);
   }
-  if(pcmval!=-1 && ov_pcm_tell(ov)>pcmval){
+  if(pcmval!=-1 && ivorbis_ov_pcm_tell(ov)>pcmval){
     fprintf(stderr,"pcm position out of tolerance: requested %ld, got %ld\n",
-           (long)pcmval,(long)ov_pcm_tell(ov));
+           (long)pcmval,(long)ivorbis_ov_pcm_tell(ov));
     exit(1);
   }
-  if(timeval!=-1 && ov_time_tell(ov)>timeval){
+  if(timeval!=-1 && ivorbis_ov_time_tell(ov)>timeval){
     fprintf(stderr,"time position out of tolerance: requested %ld, got %ld\n",
-            (long)timeval,(long)ov_time_tell(ov));
+            (long)timeval,(long)ivorbis_ov_time_tell(ov));
     exit(1);
   }
-  pos=ov_pcm_tell(ov);
+  pos=ivorbis_ov_pcm_tell(ov);
   if(pos<0 || pos>pcmlength){
     fprintf(stderr,"pcm position out of bounds: got %ld\n",(long)pos);
     exit(1);
   }
-  bread=ov_read(ov,buffer,4096,&dummy);
+  bread=ivorbis_ov_read(ov,buffer,4096,&dummy);
   if(bigassbuffer){
     for(j=0;j<bread;j++){
       if(buffer[j]!=bigassbuffer[j+pos*4]){
@@ -94,18 +94,18 @@ int main(){
 
 
   /* open the file/pipe on stdin */
-  if(ov_open(stdin, &ov, NULL, 0) < 0) {
+  if(ivorbis_ov_open(stdin, &ov, NULL, 0) < 0) {
     fprintf(stderr,"Could not open input as an OggVorbis file.\n\n");
     exit(1);
   }
 
-  if(ov_seekable(&ov)){
+  if(ivorbis_ov_seekable(&ov)){
 
     /* to simplify our own lives, we want to assume the whole file is
        stereo.  Verify this to avoid potentially mystifying users
        (pissing them off is OK, just don't confuse them) */
     for(i=0;i<ov.links;i++){
-      vorbis_info *vi=ov_info(&ov,i);
+      vorbis_info *vi=ivorbis_ov_info(&ov,i);
       if(vi->channels!=2){
         fprintf(stderr,"Sorry; right now seeking_test can only use Vorbis files\n"
                "that are entirely stereo.\n\n");
@@ -115,13 +115,13 @@ int main(){
     
     /* because we want to do sample-level verification that the seek
        does what it claimed, decode the entire file into memory */
-    pcmlength=ov_pcm_total(&ov,-1);
-    timelength=ov_time_total(&ov,-1);
+    pcmlength=ivorbis_ov_pcm_total(&ov,-1);
+    timelength=ivorbis_ov_time_total(&ov,-1);
     bigassbuffer=malloc(pcmlength*4); /* w00t */
     if(bigassbuffer){
       i=0;
       while(i<pcmlength*4){
-	int ret=ov_read(&ov,bigassbuffer+i,pcmlength*4-i,&dummy);
+	int ret=ivorbis_ov_read(&ov,bigassbuffer+i,pcmlength*4-i,&dummy);
 	if(ret<0)continue;
 	if(ret){
 	  i+=ret;
@@ -143,7 +143,7 @@ int main(){
       for(i=0;i<1000;i++){
         ogg_int64_t val=rand()*length/RAND_MAX;
         fprintf(stderr,"\r\t%d [raw position %ld]...     ",i,(long)val);
-        ret=ov_raw_seek(&ov,val);
+        ret=ivorbis_ov_raw_seek(&ov,val);
         if(ret<0){
           fprintf(stderr,"seek failed: %d\n",ret);
           exit(1);
@@ -162,7 +162,7 @@ int main(){
       for(i=0;i<1000;i++){
         ogg_int64_t val=(double)rand()*pcmlength/RAND_MAX;
         fprintf(stderr,"\r\t%d [pcm position %ld]...     ",i,(long)val);
-        ret=ov_pcm_seek_page(&ov,val);
+        ret=ivorbis_ov_pcm_seek_page(&ov,val);
         if(ret<0){
           fprintf(stderr,"seek failed: %d\n",ret);
           exit(1);
@@ -181,14 +181,14 @@ int main(){
       for(i=0;i<1000;i++){
         ogg_int64_t val=(double)rand()*pcmlength/RAND_MAX;
         fprintf(stderr,"\r\t%d [pcm position %ld]...     ",i,(long)val);
-        ret=ov_pcm_seek(&ov,val);
+        ret=ivorbis_ov_pcm_seek(&ov,val);
         if(ret<0){
           fprintf(stderr,"seek failed: %d\n",ret);
           exit(1);
         }
-        if(ov_pcm_tell(&ov)!=val){
+        if(ivorbis_ov_pcm_tell(&ov)!=val){
           fprintf(stderr,"Declared position didn't perfectly match request: %ld != %ld\n",
-                 (long)val,(long)ov_pcm_tell(&ov));
+                 (long)val,(long)ivorbis_ov_pcm_tell(&ov));
           exit(1);
         }
 
@@ -205,7 +205,7 @@ int main(){
       for(i=0;i<1000;i++){
         ogg_int64_t val=(double)rand()*timelength/RAND_MAX;
         fprintf(stderr,"\r\t%d [time position %ld]...     ",i,(long)val);
-        ret=ov_time_seek_page(&ov,val);
+        ret=ivorbis_ov_time_seek_page(&ov,val);
         if(ret<0){
           fprintf(stderr,"seek failed: %d\n",ret);
           exit(1);
@@ -224,14 +224,14 @@ int main(){
       for(i=0;i<1000;i++){
         ogg_int64_t val=(double)rand()*timelength/RAND_MAX;
         fprintf(stderr,"\r\t%d [time position %ld]...     ",i,(long)val);
-        ret=ov_time_seek(&ov,val);
+        ret=ivorbis_ov_time_seek(&ov,val);
         if(ret<0){
           fprintf(stderr,"seek failed: %d\n",ret);
           exit(1);
         }
-        if(ov_time_tell(&ov)<val-1 || ov_time_tell(&ov)>val+1){
+        if(ivorbis_ov_time_tell(&ov)<val-1 || ivorbis_ov_time_tell(&ov)>val+1){
           fprintf(stderr,"Declared position didn't perfectly match request: %ld != %ld\n",
-                  (long)val,(long)ov_time_tell(&ov));
+                  (long)val,(long)ivorbis_ov_time_tell(&ov));
           exit(1);
         }
 
@@ -247,7 +247,7 @@ int main(){
     fprintf(stderr,"Standard input was not seekable.\n");
   }
 
-  ov_clear(&ov);
+  ivorbis_ov_clear(&ov);
   return 0;
 }
 

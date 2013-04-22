@@ -24,7 +24,7 @@
 #include "misc.h"
 #include "block.h"
 
-static int _vorbis_synthesis1(vorbis_block *vb,ogg_packet *op,int decodep){
+static int _ivorbis_synthesis1(vorbis_block *vb,ogg_packet *op,int decodep){
   vorbis_dsp_state     *vd= vb ? vb->vd : 0;
   private_state        *b= vd ? (private_state *)vd->backend_state: 0;
   vorbis_info          *vi= vd ? vd->vi : 0;
@@ -91,13 +91,13 @@ static int _vorbis_synthesis1(vorbis_block *vb,ogg_packet *op,int decodep){
 }
 
 int vorbis_synthesis(vorbis_block *vb,ogg_packet *op){
-  return _vorbis_synthesis1(vb,op,1);
+  return _ivorbis_synthesis1(vb,op,1);
 }
 
 /* used to track pcm position without actually performing decode.
    Useful for sequential 'fast forward' */
 int vorbis_synthesis_trackonly(vorbis_block *vb,ogg_packet *op){
-  return _vorbis_synthesis1(vb,op,0);
+  return _ivorbis_synthesis1(vb,op,0);
 }
 
 long vorbis_packet_blocksize(vorbis_info *vi,ogg_packet *op){

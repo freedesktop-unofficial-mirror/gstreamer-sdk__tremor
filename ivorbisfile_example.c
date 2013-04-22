@@ -43,7 +43,7 @@ int main(){
   _setmode( _fileno( stdout ), _O_BINARY );
 #endif
 
-  if(ov_open(stdin, &vf, NULL, 0) < 0) {
+  if(ivorbis_ov_open(stdin, &vf, NULL, 0) < 0) {
       fprintf(stderr,"Input does not appear to be an Ogg bitstream.\n");
       exit(1);
   }
@@ -51,20 +51,20 @@ int main(){
   /* Throw the comments plus a few lines about the bitstream we're
      decoding */
   {
-    char **ptr=ov_comment(&vf,-1)->user_comments;
-    vorbis_info *vi=ov_info(&vf,-1);
+    char **ptr=ivorbis_ov_comment(&vf,-1)->user_comments;
+    vorbis_info *vi=ivorbis_ov_info(&vf,-1);
     while(*ptr){
       fprintf(stderr,"%s\n",*ptr);
       ++ptr;
     }
     fprintf(stderr,"\nBitstream is %d channel, %ldHz\n",vi->channels,vi->rate);
     fprintf(stderr,"\nDecoded length: %ld samples\n",
-	    (long)ov_pcm_total(&vf,-1));
-    fprintf(stderr,"Encoded by: %s\n\n",ov_comment(&vf,-1)->vendor);
+	    (long)ivorbis_ov_pcm_total(&vf,-1));
+    fprintf(stderr,"Encoded by: %s\n\n",ivorbis_ov_comment(&vf,-1)->vendor);
   }
   
   while(!eof){
-    long ret=ov_read(&vf,pcmout,sizeof(pcmout),&current_section);
+    long ret=ivorbis_ov_read(&vf,pcmout,sizeof(pcmout),&current_section);
     if (ret == 0) {
       /* EOF */
       eof=1;
@@ -84,7 +84,7 @@ int main(){
   }
 
   /* cleanup */
-  ov_clear(&vf);
+  ivorbis_ov_clear(&vf);
     
   fprintf(stderr,"Done.\n");
   return(0);

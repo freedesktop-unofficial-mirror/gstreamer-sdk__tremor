@@ -42,7 +42,7 @@ typedef struct {
   int    (*seek_func)  (void *datasource, ogg_int64_t offset, int whence);
   int    (*close_func) (void *datasource);
   long   (*tell_func)  (void *datasource);
-} ov_callbacks;
+} ivorbis_ov_callbacks;
 
 #define  NOTOPEN   0
 #define  PARTOPEN  1
@@ -81,44 +81,44 @@ typedef struct OggVorbis_File {
   vorbis_dsp_state vd; /* central working state for the packet->PCM decoder */
   vorbis_block     vb; /* local working space for packet->PCM decode */
 
-  ov_callbacks callbacks;
+  ivorbis_ov_callbacks callbacks;
 
 } OggVorbis_File;
 
-extern int ov_clear(OggVorbis_File *vf);
-extern int ov_open(FILE *f,OggVorbis_File *vf,const char *initial,long ibytes);
-extern int ov_open_callbacks(void *datasource, OggVorbis_File *vf,
-		const char *initial, long ibytes, ov_callbacks callbacks);
+extern int ivorbis_ov_clear(OggVorbis_File *vf);
+extern int ivorbis_ov_open(FILE *f,OggVorbis_File *vf,const char *initial,long ibytes);
+extern int ivorbis_ov_open_callbacks(void *datasource, OggVorbis_File *vf,
+		const char *initial, long ibytes, ivorbis_ov_callbacks callbacks);
 
-extern int ov_test(FILE *f,OggVorbis_File *vf,const char *initial,long ibytes);
-extern int ov_test_callbacks(void *datasource, OggVorbis_File *vf,
-		const char *initial, long ibytes, ov_callbacks callbacks);
-extern int ov_test_open(OggVorbis_File *vf);
+extern int ivorbis_ov_test(FILE *f,OggVorbis_File *vf,const char *initial,long ibytes);
+extern int ivorbis_ov_test_callbacks(void *datasource, OggVorbis_File *vf,
+		const char *initial, long ibytes, ivorbis_ov_callbacks callbacks);
+extern int ivorbis_ov_test_open(OggVorbis_File *vf);
 
-extern long ov_bitrate(OggVorbis_File *vf,int i);
-extern long ov_bitrate_instant(OggVorbis_File *vf);
-extern long ov_streams(OggVorbis_File *vf);
-extern long ov_seekable(OggVorbis_File *vf);
-extern long ov_serialnumber(OggVorbis_File *vf,int i);
+extern long ivorbis_ov_bitrate(OggVorbis_File *vf,int i);
+extern long ivorbis_ov_bitrate_instant(OggVorbis_File *vf);
+extern long ivorbis_ov_streams(OggVorbis_File *vf);
+extern long ivorbis_ov_seekable(OggVorbis_File *vf);
+extern long ivorbis_ov_serialnumber(OggVorbis_File *vf,int i);
 
-extern ogg_int64_t ov_raw_total(OggVorbis_File *vf,int i);
-extern ogg_int64_t ov_pcm_total(OggVorbis_File *vf,int i);
-extern ogg_int64_t ov_time_total(OggVorbis_File *vf,int i);
+extern ogg_int64_t ivorbis_ov_raw_total(OggVorbis_File *vf,int i);
+extern ogg_int64_t ivorbis_ov_pcm_total(OggVorbis_File *vf,int i);
+extern ogg_int64_t ivorbis_ov_time_total(OggVorbis_File *vf,int i);
 
-extern int ov_raw_seek(OggVorbis_File *vf,ogg_int64_t pos);
-extern int ov_pcm_seek(OggVorbis_File *vf,ogg_int64_t pos);
-extern int ov_pcm_seek_page(OggVorbis_File *vf,ogg_int64_t pos);
-extern int ov_time_seek(OggVorbis_File *vf,ogg_int64_t pos);
-extern int ov_time_seek_page(OggVorbis_File *vf,ogg_int64_t pos);
+extern int ivorbis_ov_raw_seek(OggVorbis_File *vf,ogg_int64_t pos);
+extern int ivorbis_ov_pcm_seek(OggVorbis_File *vf,ogg_int64_t pos);
+extern int ivorbis_ov_pcm_seek_page(OggVorbis_File *vf,ogg_int64_t pos);
+extern int ivorbis_ov_time_seek(OggVorbis_File *vf,ogg_int64_t pos);
+extern int ivorbis_ov_time_seek_page(OggVorbis_File *vf,ogg_int64_t pos);
 
-extern ogg_int64_t ov_raw_tell(OggVorbis_File *vf);
-extern ogg_int64_t ov_pcm_tell(OggVorbis_File *vf);
-extern ogg_int64_t ov_time_tell(OggVorbis_File *vf);
+extern ogg_int64_t ivorbis_ov_raw_tell(OggVorbis_File *vf);
+extern ogg_int64_t ivorbis_ov_pcm_tell(OggVorbis_File *vf);
+extern ogg_int64_t ivorbis_ov_time_tell(OggVorbis_File *vf);
 
-extern vorbis_info *ov_info(OggVorbis_File *vf,int link);
-extern vorbis_comment *ov_comment(OggVorbis_File *vf,int link);
+extern vorbis_info *ivorbis_ov_info(OggVorbis_File *vf,int link);
+extern vorbis_comment *ivorbis_ov_comment(OggVorbis_File *vf,int link);
 
-extern long ov_read(OggVorbis_File *vf,char *buffer,int length,
+extern long ivorbis_ov_read(OggVorbis_File *vf,char *buffer,int length,
 		    int *bitstream);
 
 #ifdef __cplusplus
